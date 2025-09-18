@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Minha Conta - Lang Land</title>
+    <link rel="stylesheet" type="text/css" href="css/style.css" />
+    <style>
+        body {
+            background: #16d6b7;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        header {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 15px 20px;
+            background-color: #bfedfb;
+            position: relative;
+        }
+        .logo {
+            position: absolute;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+        .logo img {
+            width: 145px;
+            cursor: pointer;
+        }
+        .titulo-jogos {
+            color: #d91563;
+            font-size: 2.2rem;
+            font-weight: bold;
+            margin-left: 0;
+            text-align: center;
+            flex: 1;
+        }
+        main {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .conta-container {
+            background: rgba(255,255,255,0.92);
+            border-radius: 20px;
+            max-width: 600px;
+            width: 100%;
+            margin: 0 auto;
+            padding: 50px 40px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.12);
+            text-align: center;
+        }
+        .perfil-foto {
+            width: 140px;
+            height: 140px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 28px;
+            border: 5px solid #edc945;
+        }
+        .apelido-edit {
+            font-size: 2.1rem;
+            font-weight: bold;
+            color: #d91563;
+            margin-bottom: 18px;
+            border: none;
+            background: transparent;
+            text-align: center;
+            outline: none;
+            width: 80%;
+        }
+        .apelido-edit:focus {
+            background: #fffbe6;
+            border-radius: 8px;
+        }
+        .nivel {
+            font-size: 1.3rem;
+            color: #247bca;
+            margin-bottom: 18px;
+            cursor: pointer;
+            font-weight: 700;
+            transition: color 0.2s;
+        }
+        .nivel:hover {
+            color: #e84251;
+            text-decoration: underline;
+        }
+        .niveis-lista {
+            display: none;
+            margin-bottom: 18px;
+        }
+        .niveis-lista span {
+            display: block;
+            font-size: 1.1rem;
+            color: #247bca;
+            margin: 6px 0;
+            font-weight: 600;
+        }
+        .conquistas {
+            margin-bottom: 28px;
+        }
+        .dias-destaque {
+            display: inline-block;
+            background: linear-gradient(90deg, #edc945 60%, #fffbe6 100%);
+            color: #d91563;
+            border-radius: 24px;
+            padding: 12px 32px;
+            font-size: 1.4rem;
+            font-weight: bold;
+            box-shadow: 0 2px 8px rgba(237,201,69,0.12);
+            margin-bottom: 8px;
+            border: 2px solid #edc945;
+        }
+        .ranking {
+            font-size: 1.1rem;
+            color: #e84251;
+            margin-bottom: 22px;
+        }
+        .email {
+            font-size: 1.1rem;
+            color: #333;
+            margin-bottom: 10px;
+            display: none;
+        }
+        .mostrar-email {
+            margin-bottom: 18px;
+        }
+        .mostrar-email button {
+            background-color: #247bca;
+            color: #fff;
+            border: none;
+            border-radius: 18px;
+            padding: 8px 22px;
+            font-size: 1rem;
+            cursor: pointer;
+            font-weight: 600;
+            transition: background-color 0.2s;
+        }
+        .mostrar-email button:hover {
+            background-color: #e84251;
+        }
+        .desconectar {
+            margin-top: 12px;
+        }
+        .desconectar button {
+            background-color: #e84251;
+            color: #fff;
+            border: none;
+            border-radius: 18px;
+            padding: 8px 22px;
+            font-size: 1rem;
+            cursor: pointer;
+            font-weight: 600;
+            transition: background-color 0.2s;
+        }
+        .desconectar button:hover {
+            background-color: #247bca;
+        }
+        footer {
+            text-align: center;
+            padding: 10px;
+            background-color: #ffffff;
+            margin-top: 20px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+<header>
+    <div class="logo" onclick="window.location.href='jogos.html'">
+        <img src="img/LOGOdeitada.png" alt="Lang Land Logo">
+    </div>
+    <h1 class="titulo-jogos">Minha Conta</h1>
+</header>
+
+<main>
+    <div class="conta-container">
+        <img src="img/Contapessoal.png" alt="Foto de Perfil" class="perfil-foto">
+        <input type="text" id="apelido" class="apelido-edit" value="SuperSophi" maxlength="20" />
+        <div class="nivel" onclick="mostrarNiveis()">Nível Básico do Inglês</div>
+        <div class="niveis-lista" id="niveis-lista">
+            <span><strong>Nível Básico</strong> (atual)</span>
+            <span>Nível Intermediário</span>
+            <span>Nível Avançado</span>
+        </div>
+        <div class="conquistas">
+            <div class="dias-destaque">Dias Contínuos: <span id="dias">1</span></div>
+        </div>
+        <div class="ranking">Ranking: #5 da turma</div>
+        <div class="email" id="email-info">sophia@gmail.com</div>
+        <div class="mostrar-email">
+            <button onclick="mostrarEmail()">Mostrar e-mail</button>
+        </div>
+        <div class="desconectar">
+            <button onclick="desconectar()">Desconectar</button>
+        </div>
+    </div>
+</main>
+
+<footer id="footer-link">
+    <p>&copy; 2025 Lang Land. Todos os direitos reservados.</p>
+</footer>
+
+<script>
+    function mostrarEmail() {
+        const emailDiv = document.getElementById('email-info');
+        emailDiv.style.display = emailDiv.style.display === 'block' ? 'none' : 'block';
+    }
+
+    function mostrarNiveis() {
+        const lista = document.getElementById('niveis-lista');
+        lista.style.display = lista.style.display === 'block' ? 'none' : 'block';
+    }
+
+    // Salva o apelido no localStorage para manter ao recarregar
+    const apelidoInput = document.getElementById('apelido');
+    apelidoInput.addEventListener('change', function() {
+        localStorage.setItem('apelidoUsuario', apelidoInput.value);
+    });
+
+    // Carrega o apelido salvo, se existir
+    window.onload = function() {
+        const salvo = localStorage.getItem('apelidoUsuario');
+        if (salvo) apelidoInput.value = salvo;
+    }
+
+    // Footer clicável para privacidade
+    document.getElementById("footer-link").addEventListener("click", function(){
+        window.location.href = "privacidade.html";
+    });
+function desconectar() {
+    // Remove dados armazenados no navegador
+    localStorage.removeItem('apelidoUsuario');      // Apelido
+    localStorage.removeItem('usuarioCadastrado');   // Flag de login
+    sessionStorage.clear();                          // Limpa sessão temporária
+
+    // Remove todos os cookies
+    document.cookie.split(";").forEach(function(c) {
+        document.cookie = c.replace(/^ +/, "")
+                             .replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/");
+    });
+
+    // Mensagem de confirmação
+    alert('Você saiu com sucesso');
+
+    // Redireciona para página inicial
+    window.location.href = 'index.html';
+}
+
+</script>
+</body>
+</html>

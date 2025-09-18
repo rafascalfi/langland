@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Lang Land - Memory Game</title>
+<style>
+    body {
+        min-height: 100vh;
+        margin: 0;
+        padding: 0;
+        font-family: Arial, sans-serif;
+        background: #d91563;
+        display: flex;
+        flex-direction: column;
+        overflow-x: hidden;
+        position: relative;
+    }
+
+    /* Fundo animado */
+    .estrela-bg {
+        position: absolute; top: 0; left: 0;
+        width: 100vw; height: 100vh;
+        pointer-events: none; z-index: 0; overflow: hidden;
+    }
+    .estrelinha {
+        position: absolute;
+        color: #edc945;
+        opacity: 0.7;
+        animation: estrelaMove 8s linear infinite;
+        font-size: 20px;
+    }
+    @keyframes estrelaMove {
+        0% { transform: translateY(-20px);}
+        100% { transform: translateY(100vh);}
+    }
+
+    /* Confetes */
+    .confetti {
+        position: fixed;
+        width: 10px;
+        height: 10px;
+        background-color: #fff;
+        top: 0; left: 50%;
+        opacity: 0.8;
+        pointer-events: none;
+        z-index: 9999;
+        animation: fall 3s linear forwards;
+    }
+    @keyframes fall {
+        0% { transform: translateY(0) rotate(0deg); }
+        100% { transform: translateY(100vh) rotate(720deg); }
+    }
+
+    header {
+        display: flex; align-items: center; justify-content: space-between;
+        padding: 15px 20px; background-color: #bfedfb;
+        z-index: 2; position: relative;
+    }
+    .logo img { width: 145px; }
+    .perfil-icon { width: 70px; cursor: pointer; }
+
+    /* Centralizar Memory Game */
+    .centro-header {
+        text-align: center;
+        flex: 1;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    .centro-header h1 {
+        font-size: 2.2rem;
+        color: #d91563;
+        margin: 0;
+        letter-spacing: 2px;
+    }
+
+    main {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding: 20px;
+        z-index: 2;
+        position: relative;
+    }
+
+    .game-container {
+        display: flex; flex-direction: column;
+        align-items: center; justify-content: center;
+        width: 100%;
+    }
+
+    /* Menu de níveis */
+    .level-selection {
+        display: flex;
+        gap: 20px;
+        margin-top: 30px;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .level-card {
+        background: #fff;
+        padding: 25px 30px;
+        border-radius: 15px;
+        box-shadow: 0 8px 15px rgba(0,0,0,0.2);
+        cursor: pointer;
+        text-align: center;
+        transition: transform 0.3s, box-shadow 0.3s, background 0.3s;
+        width: 140px;
+    }
+
+    .level-card:hover {
+        transform: translateY(-8px) scale(1.05);
+        box-shadow: 0 12px 20px rgba(0,0,0,0.3);
+        background-color: #edc945;
+        color: #d91563;
+    }
+
+    .level-card h3 {
+        margin: 0;
+        font-size: 1.4rem;
+        color: #d91563;
+    }
+
+    .level-card p {
+        margin: 5px 0 0;
+        font-weight: bold;
+        color: #247bca;
+    }
+
+    .game-board {
+        display: grid;
+        gap: 10px;
+        margin-top: 20px;
+        justify-content: center;
+    }
+
+    .game-container h2 {
+        color: #ffffff; 
+        text-align: center;
+        margin-bottom: 15px;
+    }
+
+    .card {
+        width: 100px;
+        height: 100px;
+        background-color: #bfedfb;
+        border-radius: 10px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        transition: transform 0.3s;
+        box-shadow: 0 4px 6px #d91563;
+        font-weight: bold;
+        font-size: 1rem;
+        text-align: center;
+    }
+
+    .card img {
+        width: 70%;
+        height: 70%;
+        object-fit: contain;
+        display: none;
+    }
+
+    .card.flipped img, .card.matched img,
+    .card.flipped span, .card.matched span {
+        display: block;
+    }
+
+    .card span { display: none; }
+
+    .card.flipped, .card.matched { background-color: #fff; }
+
+    .card.matched {
+        border: 2px solid #10b981;
+        box-shadow: 0 0 10px #10b981;
+        cursor: default;
+    }
+
+    button {
+        margin-top: 20px; padding: 10px 16px;
+        border: none; border-radius: 8px;
+        background-color: #247bca; color: white;
+        font-size: 1rem; cursor: pointer;
+        transition: background 0.2s, transform 0.2s;
+    }
+    button:hover { background-color: #e84251; transform: scale(1.05); }
+
+    footer {
+        text-align: center;
+        padding: 15px;
+        font-size: 14px;
+        color: #fff;
+        background: #247bca;
+        margin-top: auto;
+        cursor: pointer; /* indica que é clicável */
+    }
+
+    @media (max-width: 600px) {
+        .game-board { grid-template-columns: repeat(4, 100px); }
+    }
+</style>
+</head>
+<body>
+
+<div class="estrela-bg" id="estrela-bg"></div>
+
+<header>
+    <div class="logo">
+        <a href="jogos.html">
+            <img src="img/LOGOdeitada.png" alt="Lang Land Logo"> 
+        </a>
+    </div>
+
+    <div class="centro-header">
+        <h1>Memory Game</h1>
+    </div>
+
+    <div class="icones-conta">
+        <a href="conta.html">
+            <img src="img/Contapessoal.png" class="perfil-icon" alt="Perfil"> 
+        </a>
+    </div>
+</header>
+
+<main>
+    <div class="game-container" id="menu">
+        <h2>Escolha o nível</h2>
+        <div class="level-selection">
+            <div class="level-card" onclick="startGame('facil')">
+                <h3>Fácil</h3>
+                <p>6 pares</p>
+            </div>
+            <div class="level-card" onclick="startGame('medio')">
+                <h3>Médio</h3>
+                <p>8 pares</p>
+            </div>
+            <div class="level-card" onclick="startGame('dificil')">
+                <h3>Difícil</h3>
+                <p>12 pares</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="game-container" id="jogo" style="display:none;">
+        <div id="gameBoard" class="game-board"></div>
+        <button onclick="backToMenu()">Voltar</button>
+    </div>
+</main>
+
+<footer id="footer-link">
+    <p>&copy; 2025 Lang Land. Todos os direitos reservados.</p>
+</footer>
+
+<audio id="winSound" src="https://freesound.org/data/previews/341/341695_3248244-lq.mp3"></audio>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Fundo de estrelas
+    const estrelaBg = document.getElementById('estrela-bg');
+    for(let i=0; i<25; i++) {
+        const estrela = document.createElement('span');
+        estrela.className = 'estrelinha';
+        estrela.innerHTML = '★';
+        estrela.style.left = Math.random()*100 + 'vw';
+        estrela.style.top = (-30 - Math.random()*60) + 'px';
+        estrela.style.fontSize = (14 + Math.random()*20) + 'px';
+        estrela.style.opacity = (0.5 + Math.random()*0.5);
+        estrela.style.animationDuration = (6 + Math.random()*4) + 's';
+        estrela.style.animationDelay = (Math.random()*8) + 's';
+        estrelaBg.appendChild(estrela);
+    }
+
+    // Footer clicável
+    const footerLink = document.getElementById("footer-link");
+    footerLink.addEventListener("click", function() {
+        window.location.href = "privacidade.html";
+    });
+});
+
+const cardData = [
+    { img: 'img/dog.png', word: 'DOG' },
+    { img: 'img/cat.png', word: 'CAT' },
+    { img: 'img/sun.png', word: 'SUN' },
+    { img: 'img/moon.png', word: 'MOON' },
+    { img: 'img/bird.png', word: 'BIRD' },
+    { img: 'img/car.png', word: 'CAR' },
+    { img: 'img/tree.png', word: 'TREE' },
+    { img: 'img/pizza.png', word: 'PIZZA' },
+    { img: 'img/ball.png', word: 'BALL' },
+    { img: 'img/house.png', word: 'HOUSE' },
+    { img: 'img/book.png', word: 'BOOK' },
+    { img: 'img/teddy.png', word: 'TEDDY' }
+];
+
+let gameState = { level: null, cards: [], flippedCards: [], matchedPairs: 0 };
+
+function startGame(level) {
+    gameState.level = level;
+    gameState.matchedPairs = 0;
+    gameState.flippedCards = [];
+    document.getElementById('menu').style.display = 'none';
+    document.getElementById('jogo').style.display = 'flex';
+
+    let pairCount = level==='facil' ? 6 : level==='medio' ? 8 : 12;
+    let selectedCards = cardData.slice(0, pairCount);
+
+    let cards = [];
+    selectedCards.forEach(c => {
+        cards.push({type:'img', value:c.img, name:c.word});
+        cards.push({type:'word', value:c.word, name:c.word});
+    });
+
+    gameState.cards = cards.sort(() => Math.random()-0.5);
+    renderBoard();
+}
+
+function renderBoard() {
+    const board = document.getElementById('gameBoard');
+    board.innerHTML = '';
+    gameState.cards.forEach((card, index) => {
+        const cardDiv = document.createElement('div');
+        cardDiv.className = 'card';
+        cardDiv.dataset.index = index;
+
+        if(card.type === 'img'){
+            const img = document.createElement('img');
+            img.src = card.value;
+            img.alt = card.name;
+            cardDiv.appendChild(img);
+        } else {
+            const span = document.createElement('span');
+            span.textContent = card.value;
+            cardDiv.appendChild(span);
+        }
+
+        cardDiv.addEventListener('click', () => flipCard(index));
+        board.appendChild(cardDiv);
+    });
+
+    const cols = gameState.level==='facil' ? 3 : gameState.level==='medio' ? 4 : 6;
+    board.style.gridTemplateColumns = `repeat(${cols}, 100px)`;
+}
+
+function flipCard(index) {
+    const card = gameState.cards[index];
+    const cardElement = document.querySelector(`.card[data-index="${index}"]`);
+    if(cardElement.classList.contains('flipped') || cardElement.classList.contains('matched') || gameState.flippedCards.length >= 2) return;
+    cardElement.classList.add('flipped');
+    gameState.flippedCards.push({card, element: cardElement, index});
+    if(gameState.flippedCards.length === 2){ setTimeout(checkMatch, 500); }
+}
+
+function checkMatch() {
+    const [first, second] = gameState.flippedCards;
+    if(first.card.name === second.card.name){
+        first.element.classList.add('matched');
+        second.element.classList.add('matched');
+        gameState.matchedPairs++;
+    } else {
+        first.element.classList.remove('flipped');
+        second.element.classList.remove('flipped');
+    }
+    gameState.flippedCards = [];
+    if(gameState.matchedPairs === gameState.cards.length / 2){ playVictory(); }
+}
+
+function playVictory(){
+    const audio = document.getElementById('winSound');
+    audio.play();
+    for(let i=0; i<50; i++){
+        const confetti = document.createElement('div');
+        confetti.className = 'confetti';
+        confetti.style.left = Math.random()*100 + 'vw';
+        confetti.style.backgroundColor = `hsl(${Math.random()*360}, 100%, 50%)`;
+        confetti.style.animationDuration = (2 + Math.random()*2) + 's';
+        document.body.appendChild(confetti);
+        setTimeout(()=>confetti.remove(), 3000);
+    }
+    setTimeout(()=>{ alert('Parabéns! Você completou o nível!'); backToMenu(); }, 1000);
+}
+
+function backToMenu(){
+    document.getElementById('jogo').style.display = 'none';
+    document.getElementById('menu').style.display = 'flex';
+}
+</script>
+</body>
+</html>
+
+

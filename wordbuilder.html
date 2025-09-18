@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Lang Land - Sentence Builder</title>
+  <style>
+    :root{
+      --bg:#edc945; /* fundo pedido */
+      --accent:#247bca;
+      --accent-2:#e84251;
+      --soft:#fff9d6;
+      --lime:#16d6b7;
+      --ink:#1b1b1b;
+      --green:#1b9e77;
+      --red:#b00020;
+    }
+
+    body.pag-sentence{
+      min-height:100vh; margin:0; padding:0;
+      font-family: Arial, sans-serif;
+      background: var(--bg);
+      display:flex; flex-direction:column;
+      position:relative;
+      overflow-x:hidden;
+    }
+
+    header{ display:flex; align-items:center; justify-content:space-between; padding:15px 20px; background: var(--soft); z-index:2; position:relative; }
+    .logo img{ width:145px; cursor:pointer; }
+    .perfil-icon{ width:70px; cursor:pointer; }
+    .centro-header{ text-align:center; flex:1; }
+    h1{ color: var(--ink); font-size:2rem; margin:0; }
+
+    main{ flex:1; display:flex; align-items:center; justify-content:center; padding:20px; z-index:2; position:relative; }
+
+    .game-wrapper{ width:100%; max-width:1100px; display:flex; flex-wrap:wrap; align-items:center; gap:24px; justify-content:center; }
+
+    /* Painel da esquerda (ilustração e instruções) */
+    .left-panel{ flex:1 1 360px; display:flex; flex-direction:column; align-items:center; gap:16px; }
+    .mascote{ width:100%; max-width:420px; aspect-ratio: 4/3; background: var(--soft); border-radius:16px; display:flex; align-items:center; justify-content:center; box-shadow:0 8px 24px rgba(0,0,0,.12); }
+    .mascote span{ font-size:96px; }
+    .tips{ background: #00000033; color:#fff; padding:12px 16px; border-radius:12px; text-align:center; font-weight:600; backdrop-filter: blur(2px); }
+
+    /* Painel da direita (jogo) */
+    .right-panel{ flex:1 1 480px; background: #ffffff2c; border-radius:16px; padding:20px; box-shadow:0 8px 24px rgba(0,0,0,.15); }
+
+    .top-row{ display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:12px; }
+    .title{ color:#fff; font-weight:800; letter-spacing:.5px; }
+
+    .controls{ display:flex; flex-wrap:wrap; gap:10px; }
+    button{ border:none; border-radius:10px; padding:10px 14px; font-size:1rem; cursor:pointer; background: var(--accent); color:#fff; transition:.2s; font-weight:700; }
+    button:hover{ background: var(--accent-2); transform: translateY(-1px); }
+    .ghost{ background:#ffffff2a; color:#fff; }
+
+    .board{ display:flex; flex-direction:column; gap:16px; background:#ffffff10; border-radius:12px; padding:16px; }
+
+    /* Slots da frase */
+    .slots{ display:flex; gap:10px; flex-wrap:wrap; justify-content:center; min-height:60px; padding:10px; background:#ffffff33; border-radius:10px; }
+    .slot{ min-width:80px; min-height:50px; border-radius:8px; background: var(--soft); display:flex; align-items:center; justify-content:center; font-weight:700; font-size:1.2rem; color: var(--ink); cursor:pointer; }
+
+    /* Banco de palavras */
+    .bank{ display:flex; gap:10px; flex-wrap:wrap; justify-content:center; }
+    .tile{ padding:10px 14px; border-radius:8px; background: var(--soft); display:flex; align-items:center; justify-content:center; font-weight:800; font-size:1.2rem; color: var(--ink); cursor:grab; user-select:none; box-shadow:0 6px 0 rgba(0,0,0,.15); }
+    .tile.dragging{ opacity:.6; transform: scale(.96); }
+
+    .feedback{ text-align:center; font-size:1.1rem; font-weight:800; padding:6px 10px; border-radius:8px; }
+    .ok{ background:var(--green); color:#fff; }
+    .no{ background:var(--red); color:#fff; }
+
+    .statusbar{ display:flex; align-items:center; justify-content:space-between; gap:10px; color:#fff; font-weight:700; }
+
+    footer{ text-align:center; padding:15px; font-size:14px; color:#fff; background: var(--accent); margin-top:auto; }
+
+    @media (max-width:760px){
+      .mascote{ display:none; }
+      .tips{ font-size:.95rem; }
+      .slot{ min-width:60px; font-size:1rem; }
+    }
+  </style>
+</head>
+<body class="pag-sentence">
+  <header>
+    <div class="logo">
+      <img src="img/LOGOdeitada.png" alt="Lang Land Logo" onclick="window.location.href='jogos.html'" />
+    </div>
+    <div class="centro-header">
+      <h1>Sentence Builder</h1>
+    </div>
+    <div class="icones-conta">
+      <a href="conta.html"><img class="perfil-icon" src="img/Contapessoal.png" alt="Perfil" /></a>
+    </div>
+  </header>
+
+  <main>
+    <div class="game-wrapper">
+      <div class="left-panel">
+        <div class="mascote"><span>📚</span></div>
+        <div class="tips">Arraste as palavras para formar a frase correta em inglês. Assim você treina gramática de forma divertida!</div>
+      </div>
+
+      <div class="right-panel">
+        <div class="top-row">
+          <h2 class="title">Monte a frase correta</h2>
+          <div class="controls">
+            <button id="btn-clear" class="ghost">Limpar</button>
+            <button id="btn-next">Próxima ▶</button>
+          </div>
+        </div>
+
+        <div class="board">
+          <div class="statusbar">
+            <div>Rodada: <span id="round">1</span>/<span id="total">3</span></div>
+            <div>Pontos: <span id="score">0</span></div>
+          </div>
+
+          <div id="slots" class="slots"></div>
+          <div id="bank" class="bank"></div>
+          <div id="feedback" class="feedback" style="display:none;"></div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <p>© 2025 Lang Land. Todos os direitos reservados.</p>
+  </footer>
+
+  <script>
+    // Bloqueio para usuários não cadastrados
+    document.addEventListener('DOMContentLoaded', function(){
+      if(localStorage.getItem('usuarioCadastrado') !== 'true'){
+        alert('Você precisa fazer o cadastro para acessar os jogos.');
+        window.location.href = 'index.html';
+      }
+    });
+
+    // Frases por nível (simples por enquanto)
+    const SENTENCES = [
+      ["I like dogs"],
+      ["She is happy"],
+      ["We play soccer"]
+    ];
+
+    let state = {
+      roundIndex: 0,
+      score: 0,
+      currentSentence: []
+    };
+
+    const elSlots = document.getElementById('slots');
+    const elBank = document.getElementById('bank');
+    const elRound = document.getElementById('round');
+    const elTotal = document.getElementById('total');
+    const elScore = document.getElementById('score');
+    const elFeedback = document.getElementById('feedback');
+    elTotal.textContent = SENTENCES.length;
+
+    function shuffleArray(arr){
+      const a = arr.slice();
+      for(let i=a.length-1;i>0;i--){
+        const j = Math.floor(Math.random()*(i+1));
+        [a[i],a[j]] = [a[j],a[i]];
+      }
+      return a;
+    }
+
+    function clearBoard(){
+      elSlots.innerHTML = '';
+      elBank.innerHTML = '';
+      hideFeedback();
+    }
+
+    function showFeedback(ok){
+      elFeedback.textContent = ok ? 'Correct!' : 'Try again!';
+      elFeedback.className = 'feedback ' + (ok ? 'ok' : 'no');
+      elFeedback.style.display = 'block';
+    }
+    function hideFeedback(){ elFeedback.style.display = 'none'; }
+
+    function renderRound(){
+      clearBoard();
+      const sentence = SENTENCES[state.roundIndex][0];
+      state.currentSentence = sentence.split(" ");
+      elRound.textContent = (state.roundIndex+1);
+
+      // Cria slots vazios
+      state.currentSentence.forEach((word, i)=>{
+        const slot = document.createElement('div');
+        slot.className = 'slot';
+        slot.dataset.index = i;
+        addDropHandlers(slot);
+        elSlots.appendChild(slot);
+      });
+
+      // Banco de palavras embaralhadas
+      const shuffled = shuffleArray(state.currentSentence);
+      shuffled.forEach(word=>{
+        const tile = document.createElement('div');
+        tile.className = 'tile';
+        tile.textContent = word;
+        tile.draggable = true;
+        tile.dataset.word = word;
+        addDragHandlers(tile);
+        elBank.appendChild(tile);
+      });
+    }
+
+    function addDragHandlers(tile){
+      tile.addEventListener('dragstart', (e)=>{
+        tile.classList.add('dragging');
+        if(!tile.id){ tile.id = 'tile-' + Math.random().toString(36).slice(2); }
+        e.dataTransfer.setData('text/tile-id', tile.id);
+      });
+      tile.addEventListener('dragend', ()=>{ tile.classList.remove('dragging'); });
+    }
+
+    function addDropHandlers(target){
+      target.addEventListener('dragover', (e)=>{ e.preventDefault(); });
+      target.addEventListener('drop', (e)=>{
+        e.preventDefault();
+        const tileId = e.dataTransfer.getData('text/tile-id');
+        const tile = document.getElementById(tileId);
+        if(!tile) return;
+
+        // se já tinha palavra, devolve pro banco
+        if(target.firstChild){ elBank.appendChild(target.firstChild); }
+        target.appendChild(tile);
+        checkIfComplete();
+      });
+    }
+
+    function currentAnswer(){
+      return Array.from(elSlots.children).map(slot=> slot.firstChild ? slot.firstChild.dataset.word : '').join(' ');
+    }
+
+    function checkIfComplete(){
+      const answer = currentAnswer();
+      if(answer.trim().split(" ").length !== state.currentSentence.length){ hideFeedback(); return; }
+      if(answer === state.currentSentence.join(" ")){
+        showFeedback(true);
+        state.score += 10;
+        elScore.textContent = state.score;
+      } else {
+        showFeedback(false);
+      }
+    }
+
+    // Controles
+    document.getElementById('btn-clear').addEventListener('click', ()=>{
+      Array.from(elSlots.children).forEach(slot=>{
+        if(slot.firstChild){ elBank.appendChild(slot.firstChild); }
+      });
+      hideFeedback();
+    });
+
+    document.getElementById('btn-next').addEventListener('click', ()=>{
+      const answer = currentAnswer();
+      if(answer === state.currentSentence.join(" ")){
+        if(state.roundIndex + 1 < SENTENCES.length){
+          state.roundIndex++; renderRound(); hideFeedback();
+        } else {
+          alert('Você concluiu todas as frases! Parabéns!');
+          state.roundIndex = 0; state.score = 0; elScore.textContent = 0; renderRound();
+        }
+      } else {
+        alert('Monte a frase correta para avançar :)');
+      }
+    });
+
+    renderRound();
+  </script>
+</body>
+</html>

@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Lang Land - Teste</title>
+  <link rel="stylesheet" type="text/css" href="css/style.css">
+  <style>
+    section form {
+      max-width: 700px;
+      margin: 0 auto;
+      text-align: left;
+    }
+    section form p {
+      margin-top: 20px;
+      font-weight: 700;
+      color: #e84251;
+    }
+    label {
+      font-weight: 500;
+      color: #333;
+      margin-left: 8px;
+      cursor: pointer;
+    }
+    button[type="submit"] {
+      margin-top: 30px;
+      background-color: #edc945;
+      border: none;
+      border-radius: 40px;
+      padding: 14px 40px;
+      font-size: 1.2rem;
+      font-weight: 700;
+      cursor: pointer;
+      color: #1a1a1a;
+      transition: background-color 0.3s ease;
+      display: block;
+      position: relative;
+      z-index: 1;
+    }
+    button[type="submit"]:hover {
+      background-color: #d9b42f;
+    }
+    .star-burst-star {
+      position: absolute;
+      pointer-events: none;
+      z-index: 20;
+      will-change: transform, opacity;
+      color: #edc945;
+      font-family: Arial, sans-serif;
+      filter: drop-shadow(0 2px 8px #edc94588);
+    }
+    .star-burst-glow {
+      animation: starBurstGlow 0.25s cubic-bezier(.22,.61,.36,1);
+    }
+    @keyframes starBurstGlow {
+      0% { box-shadow: 0 0 0 0 #edc94588; transform: scale(1);}
+      50% { box-shadow: 0 0 16px 8px #edc94588; transform: scale(1.04);}
+      100% { box-shadow: 0 0 0 0 #edc94500; transform: scale(1);}
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>Teste de Inglês</h1>
+  </header>
+
+  <main>
+    <section>
+      <h2>Responda ao teste para avaliar seu nível</h2>
+      <form id="formTeste">
+
+        <p><strong>1. Qual é a tradução de "cat"?</strong></p>
+        <input type="radio" id="q1a" name="q1" value="errada" required />
+        <label for="q1a">Cachorro</label><br />
+        <input type="radio" id="q1b" name="q1" value="correta" />
+        <label for="q1b">Gato</label><br />
+        <input type="radio" id="q1c" name="q1" value="errada" />
+        <label for="q1c">Pássaro</label>
+
+        <p><strong>2. Qual opção completa a frase? "I ___ a student."</strong></p>
+        <input type="radio" id="q2a" name="q2" value="correta" required />
+        <label for="q2a">am</label><br />
+        <input type="radio" id="q2b" name="q2" value="errada" />
+        <label for="q2b">is</label><br />
+        <input type="radio" id="q2c" name="q2" value="errada" />
+        <label for="q2c">are</label>
+
+        <p><strong>3. Qual dessas é uma cor em inglês?</strong></p>
+        <input type="radio" id="q3a" name="q3" value="errada" required />
+        <label for="q3a">House</label><br />
+        <input type="radio" id="q3b" name="q3" value="correta" />
+        <label for="q3b">Blue</label><br />
+        <input type="radio" id="q3c" name="q3" value="errada" />
+        <label for="q3c">Table</label>
+
+        <p><strong>4. Complete a frase no passado: "Yesterday, I ___ to the park."</strong></p>
+        <input type="radio" id="q4a" name="q4" value="errada" required />
+        <label for="q4a">go</label><br />
+        <input type="radio" id="q4b" name="q4" value="correta" />
+        <label for="q4b">went</label><br />
+        <input type="radio" id="q4c" name="q4" value="errada" />
+        <label for="q4c">goes</label>
+
+        <p><strong>5. Escolha a frase correta:</strong></p>
+        <input type="radio" id="q5a" name="q5" value="errada" required />
+        <label for="q5a">She don’t like apples.</label><br />
+        <input type="radio" id="q5b" name="q5" value="errada" />
+        <label for="q5b">She doesn’t likes apples.</label><br />
+        <input type="radio" id="q5c" name="q5" value="correta" />
+        <label for="q5c">She doesn’t like apples.</label>
+
+        <p><strong>6. Qual é a tradução de "I have been studying English"?</strong></p>
+        <input type="radio" id="q6a" name="q6" value="errada" required />
+        <label for="q6a">Eu estudei inglês.</label><br />
+        <input type="radio" id="q6b" name="q6" value="errada" />
+        <label for="q6b">Eu estou estudando inglês.</label><br />
+        <input type="radio" id="q6c" name="q6" value="correta" />
+        <label for="q6c">Eu tenho estudado inglês.</label>
+
+        <p><strong>7. Escolha a alternativa correta: "If I ___ more time, I would travel the world."</strong></p>
+        <input type="radio" id="q7a" name="q7" value="errada" required />
+        <label for="q7a">have</label><br />
+        <input type="radio" id="q7b" name="q7" value="correta" />
+        <label for="q7b">had</label><br />
+        <input type="radio" id="q7c" name="q7" value="errada" />
+        <label for="q7c">has</label>
+
+        <p><strong>8. Qual frase está no present perfect?</strong></p>
+        <input type="radio" id="q8a" name="q8" value="errada" required />
+        <label for="q8a">I will go to London next year.</label><br />
+        <input type="radio" id="q8b" name="q8" value="correta" />
+        <label for="q8b">I have visited London twice.</label><br />
+        <input type="radio" id="q8c" name="q8" value="errada" />
+        <label for="q8c">I am visiting London right now.</label>
+
+        <p><strong>9. Qual é a melhor tradução para "Despite the rain, we went to the beach"?</strong></p>
+        <input type="radio" id="q9a" name="q9" value="errada" required />
+        <label for="q9a">Por causa da chuva, fomos à praia.</label><br />
+        <input type="radio" id="q9b" name="q9" value="correta" />
+        <label for="q9b">Apesar da chuva, fomos à praia.</label><br />
+        <input type="radio" id="q9c" name="q9" value="errada" />
+        <label for="q9c">Como estava chovendo, fomos à praia.</label>
+
+        <button type="submit" id="btnEnviarTeste">Enviar respostas</button>
+      </form>
+    </section>
+  </main>
+
+  <footer>
+    <p>
+      <a href="privacidade.html" style="color: #ffffff; text-decoration: none; font-weight: bold; transition: color 0.2s;">
+        © 2025 Lang Land. Todos os direitos reservados.
+      </a>
+    </p>
+  </footer>
+
+<script>
+  function createStarBurst(triggerEl, options = {}) {
+    const config = Object.assign({
+      minStars: 8,
+      maxStars: 14,
+      minSize: 38,
+      maxSize: 54,
+      minDist: 30,
+      maxDist: 90,
+      minRot: 20,
+      maxRot: 40,
+      minDur: 800,
+      maxDur: 1200,
+      color: '#edc945',
+      easing: 'cubic-bezier(.22,.61,.36,1)'
+    }, options);
+
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      triggerEl.classList.add('star-burst-glow');
+      setTimeout(() => triggerEl.classList.remove('star-burst-glow'), 250);
+      return;
+    }
+
+    triggerEl.style.position = 'relative';
+
+    for (let i = 0; i < Math.floor(Math.random() * (config.maxStars - config.minStars + 1)) + config.minStars; i++) {
+      const ang = Math.random() * 2 * Math.PI;
+      const dist = config.minDist + Math.random() * (config.maxDist - config.minDist);
+      const size = config.minSize + Math.random() * (config.maxSize - config.minSize);
+      const rot = (Math.random() < 0.5 ? -1 : 1) * (config.minRot + Math.random() * (config.maxRot - config.minRot));
+      const dur = config.minDur + Math.random() * (config.maxDur - config.minDur);
+      const jitterY = Math.random() * 12 - 6;
+
+      const star = document.createElement('span');
+      star.className = 'star-burst-star';
+      star.innerHTML = '★';
+      star.style.color = config.color;
+      star.style.fontSize = size + 'px';
+      star.style.opacity = '1';
+      star.style.transform = `rotate(${rot}deg) scale(1)`;
+      star.style.position = 'absolute';
+      star.style.left = `calc(50% - ${size/2}px)`;
+      star.style.top = `calc(50% - ${size/2}px)`;
+
+      triggerEl.appendChild(star);
+
+      setTimeout(() => {
+        star.style.transition = `transform ${dur}ms ${config.easing}, opacity ${dur}ms linear`;
+        star.style.transform = `translate(${Math.cos(ang)*dist}px,${Math.sin(ang)*dist + jitterY}px) rotate(${rot*2}deg) scale(0.7)`;
+        star.style.opacity = '0';
+      }, 10);
+
+      setTimeout(() => {
+        if (star.parentNode) star.parentNode.removeChild(star);
+      }, dur + 50);
+    }
+  }
+
+  document.getElementById('formTeste').addEventListener('submit', function(e) {
+    e.preventDefault();
+
+    const btn = document.getElementById('btnEnviarTeste');
+    createStarBurst(btn);
+
+    let pontosBasico = 0;
+    let pontosIntermediario = 0;
+    let pontosAvancado = 0;
+    let totalAcertos = 0;
+
+    for (let i = 1; i <= 9; i++) {
+      const selecionada = document.querySelector(`input[name="q${i}"]:checked`);
+      if (selecionada && selecionada.value === "correta") {
+        totalAcertos++;
+        if (i <= 3) pontosBasico++;
+        else if (i <= 6) pontosIntermediario++;
+        else pontosAvancado++;
+      }
+    }
+
+    const percentual = (totalAcertos / 9) * 100;
+
+    let nivel = '';
+    if (totalAcertos <= 3) nivel = 'Básico';
+    else if (totalAcertos <= 6) nivel = 'Intermediário';
+    else nivel = 'Avançado';
+
+    setTimeout(function() {
+      alert(
+        `Resultado do teste:\n\n` +
+        `Básico: ${pontosBasico} acertos\n` +
+        `Intermediário: ${pontosIntermediario} acertos\n` +
+        `Avançado: ${pontosAvancado} acertos\n` +
+        `Total: ${totalAcertos}/9 (${percentual.toFixed(0)}%)\n\n` +
+        `Seu nível é: ${nivel}`
+      );
+      document.getElementById('formTeste').reset();
+      window.location.href = 'começo.html';
+    }, 900);
+  });
+</script>
+</body>
+</html>
+
+

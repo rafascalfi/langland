@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Lang Land - Início</title>
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+    <style>
+      section {
+        animation: fadeZoomIn 1.2s;
+        position: relative;
+      }
+      @keyframes fadeZoomIn {
+        from { opacity: 0; transform: scale(0.95);}
+        to { opacity: 1; transform: scale(1);}
+      }
+      .star-burst-star {
+        position: absolute;
+        pointer-events: none;
+        z-index: 20;
+        will-change: transform, opacity;
+        color: #edc945;
+        font-family: Arial, sans-serif;
+        filter: drop-shadow(0 2px 8px #edc94588);
+      }
+      .star-burst-glow {
+        animation: starBurstGlow 0.25s cubic-bezier(.22,.61,.36,1);
+      }
+      @keyframes starBurstGlow {
+        0% { box-shadow: 0 0 0 0 #edc94588; transform: scale(1);}
+        50% { box-shadow: 0 0 16px 8px #edc94588; transform: scale(1.04);}
+        100% { box-shadow: 0 0 0 0 #edc94500; transform: scale(1);}
+      }
+      /* Botão amarelo colorido */
+      #start-now {
+        background: linear-gradient(90deg, #edc945 70%, #e2be06 100%);
+        color: #247bca;
+        font-size: 1.3rem;
+        font-weight: bold;
+        border: none;
+        border-radius: 24px;
+        padding: 16px 38px;
+        box-shadow: 0 2px 8px rgba(237,201,69,0.12);
+        cursor: pointer;
+        transition: background 0.2s, transform 0.2s;
+        animation: btnPulse 2s infinite alternate;
+        margin-top: 18px;
+      }
+      @keyframes btnPulse {
+        0% { transform: scale(1);}
+        100% { transform: scale(1.07);}
+      }
+      #start-now:hover {
+        background: linear-gradient(90deg, #247bca 70%, #edc945 100%);
+        color: #fff;
+        transform: scale(1.09);
+      }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Bem-vindo ao Lang Land</h1>
+    </header>
+    <main>
+        <section>
+            <h2>Aprenda inglês brincando!</h2>
+            <p>Explore jogos, histórias e desafios para melhorar seu inglês de forma divertida.</p>
+            <button id="start-now">Começar agora</button>
+        </section>
+    </main>
+   <footer>
+    <p>
+        <a href="privacidade.html" style="color: #ffffff; text-decoration: none; font-weight: bold; transition: color 0.2s;">
+            © 2025 Lang Land. Todos os direitos reservados.
+        </a>
+    </p>
+</footer>
+
+    <script>
+    // Função principal do efeito
+    function createStarBurst(triggerEl, options = {}) {
+      // Configuração padrão
+      const config = Object.assign({
+        minStars: 8,
+        maxStars: 14,
+        minSize: 38, // estrelas bem maiores
+        maxSize: 54, // estrelas bem maiores
+        minDist: 30,
+        maxDist: 90,
+        minRot: 20,
+        maxRot: 40,
+        minDur: 800,
+        maxDur: 1200,
+        color: '#edc945',
+        easing: 'cubic-bezier(.22,.61,.36,1)'
+      }, options);
+
+      // Acessibilidade: reduz animação
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        triggerEl.classList.add('star-burst-glow');
+        setTimeout(() => triggerEl.classList.remove('star-burst-glow'), 250);
+        return;
+      }
+
+      // Calcula centro do botão em relação ao section
+      const section = triggerEl.closest('section');
+      const btnRect = triggerEl.getBoundingClientRect();
+      const sectionRect = section.getBoundingClientRect();
+      const centerX = btnRect.left - sectionRect.left + btnRect.width / 2;
+      const centerY = btnRect.top - sectionRect.top + btnRect.height / 2;
+
+      // Quantidade de estrelas
+      const numStars = Math.floor(Math.random() * (config.maxStars - config.minStars + 1)) + config.minStars;
+
+      for (let i = 0; i < numStars; i++) {
+        // Parâmetros aleatórios
+        const ang = Math.random() * 2 * Math.PI;
+        const dist = config.minDist + Math.random() * (config.maxDist - config.minDist);
+        const size = config.minSize + Math.random() * (config.maxSize - config.minSize);
+        const rot = (Math.random() < 0.5 ? -1 : 1) * (config.minRot + Math.random() * (config.maxRot - config.minRot));
+        const dur = config.minDur + Math.random() * (config.maxDur - config.minDur);
+
+        // Jitter vertical para gravidade leve
+        const jitterY = Math.random() * 12 - 6;
+
+        // Cria estrela (SVG minimalista)
+        const star = document.createElement('span');
+        star.className = 'star-burst-star';
+        star.innerHTML = '★';
+        star.style.color = config.color;
+        star.style.fontSize = size + 'px';
+        star.style.left = (centerX - size/2) + 'px';
+        star.style.top = (centerY - size/2) + 'px';
+        star.style.opacity = '1';
+        star.style.transform = `rotate(${rot}deg) scale(1)`;
+
+        // Animação via JS para controle total
+        setTimeout(() => {
+          star.style.transition = `transform ${dur}ms ${config.easing}, opacity ${dur}ms linear`;
+          star.style.transform = `translate(${Math.cos(ang)*dist}px,${Math.sin(ang)*dist + jitterY}px) rotate(${rot*2}deg) scale(0.7)`;
+          star.style.opacity = '0';
+        }, 10);
+
+        // Remove do DOM após animação
+        setTimeout(() => {
+          if (star.parentNode) star.parentNode.removeChild(star);
+        }, dur + 50);
+
+        section.appendChild(star);
+      }
+    }
+
+    // Ativa no clique/touch
+    const btn = document.getElementById('start-now');
+    btn.addEventListener('click', function(e) {
+      createStarBurst(btn);
+      setTimeout(() => {
+        window.location.href = 'cadastro.html';
+      }, 900);
+    });
+    btn.addEventListener('touchstart', function(e) {
+      createStarBurst(btn);
+      setTimeout(() => {
+        window.location.href = 'cadastro.html';
+      }, 900);
+    });
+    </script>
+</body>
+</html>

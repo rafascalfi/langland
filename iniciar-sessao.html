@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>Lang Land - Iniciar Sessão</title>
+  <link rel="stylesheet" type="text/css" href="css/style.css">
+  <style>
+    .form-login {
+      max-width: 400px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .form-login label {
+      font-weight: bold;
+      font-size: 1.1rem;
+      margin-bottom: 4px;
+      color: #d91563;
+    }
+
+    .form-login input[type="text"],
+    .form-login input[type="email"],
+    .form-login input[type="password"] {
+      padding: 12px;
+      border: 1px solid #80bfff;
+      border-radius: 6px;
+      font-size: 1rem;
+      width: 100%;
+    }
+
+.form-login button.btn-login {
+  background: #edc945; /* fundo amarelo */
+  color: #000;         /* texto preto */
+  border: none;
+  padding: 12px;
+  border-radius: 30px; /* bordas arredondadas */
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.form-login button.btn-login:hover {
+  background: #d4ae20; /* amarelo mais escuro no hover */
+}
+
+
+
+    .checkbox-group {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.95rem;
+    }
+
+    /* Mensagem de erro no topo */
+    .erro-senha {
+      background: #ffd6d6;
+      color: #b30000;
+      font-size: 0.95rem;
+      padding: 10px;
+      border: 1px solid #ff9999;
+      border-radius: 6px;
+      display: none;
+      text-align: center;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>Iniciar Sessão</h1>
+  </header>
+
+  <main>
+    <section>
+      <form class="form-login" action="#" method="post">
+        
+        <!-- Mensagem de erro aparece no topo -->
+        <p id="erroSenha" class="erro-senha">As senhas não conferem.</p>
+
+        <label for="usuario">E-mail ou nome de usuário:</label>
+        <input type="text" id="usuario" name="usuario" placeholder="Digite seu e-mail ou usuário" required />
+
+        <label for="senha">Senha:</label>
+        <input type="password" id="senha" name="senha" placeholder="********" required />
+
+        <label for="confirmar-senha">Confirmar senha:</label>
+        <input type="password" id="confirmar-senha" name="confirmar-senha" placeholder="********" required />
+
+        <div class="checkbox-group">
+          <input type="checkbox" id="mostrar-senha" />
+          <label for="mostrar-senha">Mostrar senha</label>
+        </div>
+
+        <button type="submit" class="btn-login">Entrar</button>
+      </form>
+    </section>
+  </main>
+
+ <footer>
+    <p>
+        <a href="privacidade.html" style="color: #ffffff; text-decoration: none; font-weight: bold; transition: color 0.2s;">
+            © 2025 Lang Land. Todos os direitos reservados.
+        </a>
+    </p>
+</footer>
+  <script>
+    const formLogin = document.querySelector('.form-login');
+    const senhaInput = document.getElementById('senha');
+    const confirmarSenhaInput = document.getElementById('confirmar-senha');
+    const mostrarSenhaCheckbox = document.getElementById('mostrar-senha');
+    const erroSenhaMsg = document.getElementById('erroSenha');
+
+    // Mostrar/ocultar senha
+    mostrarSenhaCheckbox.addEventListener('change', function() {
+      const tipo = this.checked ? 'text' : 'password';
+      senhaInput.type = tipo;
+      confirmarSenhaInput.type = tipo;
+    });
+
+    // Validação do formulário
+    formLogin.addEventListener('submit', function(event) {
+      event.preventDefault();
+
+      if (senhaInput.value !== confirmarSenhaInput.value) {
+        erroSenhaMsg.style.display = 'block';
+        return; // impede login
+      } else {
+        erroSenhaMsg.style.display = 'none';
+      }
+
+      // Marca como logado
+      localStorage.setItem('usuarioLogado', 'true');
+
+      // Redireciona para jogos
+      window.location.href = 'começo.html';
+    });
+  </script>
+
+</body>
+</html>
+
+
+

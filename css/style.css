@@ -1,0 +1,196 @@
+/* Reset básico */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Fundo simples e suave com cor sólida e leve gradiente */
+body {
+    background: #16d6b7; /* tom calmo e alegre */
+    color: #1a1a1a; /* texto escuro para melhor leitura */
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Header com cor forte mas simples, sem sombra */
+header {
+    background-color: #e84251;
+    padding: 15px 0;
+    text-align: center;
+}
+
+header h1 {
+    font-size: 2.2rem;
+    color: #fff;
+    letter-spacing: 1.5px;
+    font-weight: 700;
+}
+
+
+/* Navegação clara e espaçada */
+nav ul {
+    list-style: none;
+    margin-top: 12px;
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+nav ul li a {
+    color: #247bca; /* azul para links */
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 1.1rem;
+    padding: 6px 14px;
+    border-radius: 12px;
+    border: 2px solid transparent;
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+
+nav ul li a:hover {
+    background-color: #edc945; /* amarelo suave */
+    color: #1a1a1a;
+    border-color: #d91563; /* borda rosa para destaque */
+}
+
+nav ul li a.ativo {
+    background-color: #d91563;
+    color: #fff;
+    border-color: #d91563;
+}
+
+/* Main centralizado, com espaçamento leve */
+main {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 40px 15px;
+    text-align: center;
+}
+
+/* Caixa com fundo branco transparente e bordas arredondadas */ section { background: rgba(255, 255, 255, 0.85); border-radius: 16px; padding: 35px 25px; max-width: 600px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+/* Títulos claros e amigáveis */
+section h2 {
+    font-size: 2.2rem;
+    margin-bottom: 18px;
+    color: #e84251;
+    font-weight: 700;
+}
+
+/* Texto legível para crianças */
+section p {
+    font-size: 1.2rem;
+    line-height: 1.5;
+    margin-bottom: 30px;
+    color: #333;
+}
+
+/* Botão simples, arredondado e amigável */
+#btnComecar {
+    background-color: #edc945;
+    border: none;
+    padding: 14px 38px;
+    border-radius: 40px;
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: #ffffff;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    box-shadow: none;
+}
+
+#btnComecar:hover {
+    background-color: #d9b42f;
+}
+
+/* Footer discreto com cor da paleta */
+footer {
+    background-color: #247bca;
+    padding: 14px 0;
+    text-align: center;
+    font-size: 0.9rem;
+    color: #e00202;
+}
+
+/* Responsividade básica */
+@media (max-width: 600px) {
+    nav ul {
+        flex-direction: column;
+        gap: 12px;
+    }
+    section {
+        padding: 30px 20px;
+    }
+}
+
+.form-cadastro {
+    display: flex;
+    flex-direction: column;
+    max-width: 400px;
+    margin: 0 auto;
+}
+
+.form-cadastro label {
+    margin-top: 15px;
+    color: #d91563;
+    font-weight: 700;
+    font-size: 1.1rem;
+}
+
+.form-cadastro input {
+    margin-top: 6px;
+    padding: 10px 12px;
+    border: 2px solid #247bca;
+    border-radius: 10px;
+    font-size: 1rem;
+    outline: none;
+    transition: border-color 0.3s ease;
+}
+
+.form-cadastro input:focus {
+    border-color: #edc945;
+}
+
+.btn-cadastrar {
+    margin-top: 25px;
+    padding: 14px 0;
+    background-color: #edc945;
+    border: none;
+    border-radius: 40px;
+    font-weight: 700;
+    font-size: 1.3rem;
+    color: #1a1a1a;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.btn-cadastrar:hover {
+    background-color: #d9b42f;
+}
+
+/* Ajustes para o alinhamento no header */
+.icones-conta {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.conta {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  height: 100%;
+}
+
+.conta img,
+.perfil-icon {
+  width: auto;
+  max-height: 300px; /* ajuste conforme a altura do seu header */
+  object-fit: contain; /* mantém proporção sem distorcer */
+  display: block;
+}
+

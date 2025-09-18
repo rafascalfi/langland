@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Lang Land - Músicas Infantis</title>
+    <link rel="stylesheet" type="text/css" href="css/style.css" />
+    <style>
+        body {
+            min-height: 100vh;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background: #16d6b7; /* Fundo do site */
+            overflow-x: hidden;
+        }
+        header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 15px 20px;
+            background-color: #bfedfb;
+        }
+        .logo img {
+            width: 145px;
+        }
+        .centro-header {
+            text-align: center;
+            flex: 1;
+        }
+        .titulo-musicas {
+            color: #d91563;
+            font-size: 2.2rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        nav ul {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        nav a {
+            text-decoration: none;
+            color: #247bca;
+            font-weight: bold;
+            padding: 6px 12px;
+            border-radius: 8px;
+        }
+        nav a.ativo {
+            color: #fff;
+            background-color: #e84251;
+        }
+        .perfil-icon {
+            width: 70px;
+            cursor: pointer;
+        }
+        .lista-musicas {
+            display: flex;
+            flex-direction: column; /* Lista vertical */
+            gap: 40px; /* Espaçamento maior entre os cards */
+            margin-top: 30px;
+            padding: 0 20px;
+        }
+        .musica-card {
+            display: flex;
+            align-items: center;
+            background: #d91563; /* Fundo igual ao site */
+            border-radius: 24px;
+            box-shadow: 0 4px 16px #edc94522;
+            padding: 18px 24px;
+            cursor: pointer;
+            transition: transform 0.3s cubic-bezier(.22,.61,.36,1), box-shadow 0.3s cubic-bezier(.22,.61,.36,1);
+        }
+        .musica-card:hover {
+            transform: translateY(-12px) scale(1.07) rotate(2deg);
+            box-shadow: 0 8px 24px #edc94588, 0 0 0 4px #e84251aa;
+        }
+        .musica-img {
+            width: 140px;
+            height: 140px;
+            object-fit: cover;
+            border-radius: 20px;
+            margin-right: 22px;
+            box-shadow: 0 2px 8px #edc94555;
+        }
+        .musica-info {
+            flex: 1;
+        }
+        .musica-titulo {
+            color: #edc945;
+            font-size: 1.3rem;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+        .musica-desc {
+            color: #1a1a1a;
+            font-size: 1.05rem;
+            font-weight: 500;
+        }
+        footer {
+            text-align: center;
+            padding: 10px;
+            background-color: #ffffff;
+            margin-top: 20px;
+        }
+        @media (max-width: 900px) {
+            .musica-card {
+                flex-direction: column;
+                align-items: flex-start;
+                padding: 18px 12px;
+            }
+            .musica-img {
+                margin-right: 0;
+                margin-bottom: 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+<header>
+    <div class="logo">
+        <img src="img/LOGOdeitada.png" alt="Lang Land Logo"> 
+    </div>
+    <div class="centro-header">
+        <h1 class="titulo-musicas">Músicas Infantis</h1>
+        <nav>
+            <ul>
+                <li><a href="começo.html">Começo</a></li>
+                <li><a href="jogos.html">Jogos</a></li>
+                <li><a href="musicas.html" class="ativo">Músicas Infantis</a></li>
+            </ul>
+        </nav>
+    </div>
+    <div class="icones-conta">
+         <a href="conta.html">
+            <img src="img/Contapessoal.png" class="perfil-icon" alt="Perfil">
+        </a>
+    </div>
+</header>
+<main>
+    <section>
+        <div class="lista-musicas">
+            <div class="musica-card" onclick="window.open('https://youtu.be/XqZsoesa55w?si=Q7Tvz4bMvmebN-tn','_blank')">
+                <img src="img/Baby Shark.png" alt="Baby Shark" class="musica-img">
+                <div class="musica-info">
+                    <div class="musica-titulo">Baby Shark</div>
+                    <div class="musica-desc">
+                        Uma música muito popular que apresenta o Baby Shark e sua família. Além de divertir, ajuda as crianças a aprenderem sobre membros da família e a praticarem gestos e movimentos durante a canção.
+                    </div>
+                </div>
+            </div>
+            <div class="musica-card" onclick="window.open('https://youtu.be/b0NHrFNZWh0?si=ZOKQkHmxxOkH9tsH','_blank')">
+                <img src="img/Five Little Monkeys.png" alt="Five Little Monkeys" class="musica-img">
+                <div class="musica-info">
+                    <div class="musica-titulo">Five Little Monkeys</div>
+                    <div class="musica-desc">
+                       Canção que conta a história de cinco macaquinhos pulando na cama. Trabalha números em inglês, repetição e noções de contagem regressiva de forma lúdica.
+                    </div>
+                </div>
+            </div>
+            <div class="musica-card" onclick="window.open('https://youtu.be/astISOttCQ0?si=ZwS0i5cDEtccyVGO','_blank')">
+                <img src="img/The Gummy Bear.png" alt="The Gummy Bear Song" class="musica-img">
+                <div class="musica-info">
+                    <div class="musica-titulo">The Gummy Bear Song</div>
+                    <div class="musica-desc">
+                        Música animada do famoso ursinho de gelatina. Estimula a pronúncia, o ritmo e a memorização de palavras em inglês de maneira divertida.
+                    </div>
+                </div>
+            </div>
+            <div class="musica-card" onclick="window.open('https://youtu.be/APBf4vlQkoc?si=QCW1jZAdZdWaoYs7','_blank')">
+                <img src="img/Color Family .png" alt="Color Family Song" class="musica-img">
+                <div class="musica-info">
+                    <div class="musica-titulo">Color Family Song</div>
+                    <div class="musica-desc">
+                        Uma canção educativa que apresenta cores e associações com a família. Ajuda as crianças a fixarem vocabulário básico de cores e relações familiares.
+                    </div>
+                </div>
+            </div>
+            <div class="musica-card" onclick="window.open('https://youtu.be/yCjJyiqpAuU?si=cdj9x-cErf_aeQeX','_blank')">
+                <img src="img/Twinkle, Twinkle, Little Star.png" alt="Twinkle Twinkle Little Star" class="musica-img">
+                <div class="musica-info">
+                    <div class="musica-titulo">Twinkle Twinkle Little Star</div>
+                    <div class="musica-desc">
+                        Clássico da música infantil em inglês. Trabalha o vocabulário sobre estrelas, brilho e o céu, além de ser ideal para momentos mais calmos e de sonhar.
+                    </div>
+                </div>
+            </div>
+            <div class="musica-card" onclick="window.open('https://youtu.be/F4tHL8reNCs?si=ssBjvgPtUit7my2Y')">
+                <img src="img/Johny Johny Yes Papa.png" alt="Johny Johny Yes Papa" class="musica-img">
+                <div class="musica-info">
+                    <div class="musica-titulo">Johny Johny Yes Papa</div>
+                    <div class="musica-desc">
+                        Uma música curta e repetitiva, que mostra o diálogo entre Johny e seu pai. Ajuda na fixação de frases simples em inglês, com foco em perguntas e respostas.
+                    </div>
+                </div>
+            </div>
+            <div class="musica-card" onclick="window.open('https://www.youtube.com/watch?v=_6HzoUcx3eo','_blank')">
+    <img src="img/Old MacDonald.png" alt="Old MacDonald Had a Farm" class="musica-img">
+    <div class="musica-info">
+        <div class="musica-titulo">Old MacDonald Had a Farm</div>
+        <div class="musica-desc">
+            Canção educativa sobre animais da fazenda e os sons que eles fazem, ajudando crianças a aprender vocabulário básico.
+        </div>
+    </div>
+</div>
+
+        </div>
+    </section>
+</main>
+
+<footer id="footer-link">
+    <p>&copy; 2025 Lang Land. Todos os direitos reservados.</p>
+</footer>
+
+<script>
+    // Footer clicável
+    document.getElementById("footer-link").addEventListener("click", function(){
+        window.location.href = "privacidade.html";
+    });
+    document.getElementById("footer-link").style.cursor = "pointer";
+</script>
+</body>
+</html>
+

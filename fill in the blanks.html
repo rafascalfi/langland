@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lang Land - Fill in the blanks</title>
+<style>
+body.pag-fillword {
+    min-height: 100vh;
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    background: #edc945;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Fundo animado */
+.estrela-bg {
+    position: absolute; top: 0; left: 0;
+    width: 100vw; height: 100vh;
+    pointer-events: none; z-index: 0; overflow: hidden;
+}
+.estrelinha {
+    position: absolute;
+    color: #16d6b7;
+    opacity: 0.7;
+    animation: estrelaMove 8s linear infinite;
+}
+@keyframes estrelaMove {
+    0% { transform: translateY(-20px);}
+    100% { transform: translateY(100vh);}
+}
+
+header {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 15px 20px; background-color: #bfedfb;
+    z-index: 2; position: relative;
+}
+.logo img { width: 145px; cursor:pointer; }
+.perfil-icon { width: 70px; cursor: pointer; }
+.centro-header { text-align: center; flex: 1; }
+h1 { color: #d91563; font-size: 2rem; margin-bottom: 10px; }
+
+main {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    z-index: 2;
+    position: relative;
+}
+
+.game-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+}
+.game-container h2 {
+    color: #ffffff;
+    text-align: center;
+    margin-bottom: 15px;
+}
+
+/* Cards de nível lado a lado */
+.level-selection {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.level-card {
+    background-color: #fff;
+    border-radius: 15px;
+    padding: 25px 30px;
+    box-shadow: 0 8px 15px rgba(0,0,0,0.2);
+    text-align: center;
+    cursor: pointer;
+    transition: transform 0.3s, box-shadow 0.3s, background 0.3s;
+    width: 160px;
+}
+
+.level-card:hover {
+    transform: translateY(-8px) scale(1.05);
+    box-shadow: 0 12px 20px rgba(0,0,0,0.3);
+    background-color: #16d6b7;
+    color: #d91563;
+}
+
+.level-card h3 {
+    margin: 0;
+    font-size: 1.4rem;
+    color: #d91563;
+}
+
+.level-card p {
+    margin: 5px 0 0;
+    font-weight: bold;
+    color: #247bca;
+}
+
+/* Layout do jogo */
+.game-play {
+    display: flex;
+    gap: 50px;
+    margin-top: 20px;
+    flex-wrap: wrap;
+}
+
+.image-word { width: 250px; border-radius: 12px; }
+
+.word-panel {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+}
+
+.word-container {
+    display: flex;
+    gap: 10px;
+}
+
+.word-container span {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 60px;
+    height: 60px;
+    font-size: 2rem;
+    font-weight: bold;
+    border-radius: 10px;
+    background-color: #bfedfb;
+    color: #d91563;
+    transition: transform 0.2s, background-color 0.2s;
+}
+.word-container span:hover {
+    transform: scale(1.1);
+    background-color: #16d6b7;
+    color: white;
+}
+
+input.letter-input {
+    width: 100px;
+    height: 100px;
+    font-size: 3rem;
+    text-align: center;
+    border-radius: 12px;
+    border: 2px solid #247bca;
+}
+
+button.check-btn {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 12px;
+    background-color: #247bca;
+    color: white;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+button.check-btn:hover { background-color: #e84251; transform: scale(1.05); }
+
+.score { margin-top: 15px; color: #d91563; font-weight: bold; font-size: 1.2rem; }
+
+footer {
+    text-align: center;
+    padding: 15px;
+    font-size: 14px;
+    color: #fff;
+    background: #247bca;
+    margin-top: auto;
+    cursor: pointer; /* deixa o footer clicável */
+}
+</style>
+</head>
+<body class="pag-fillword">
+
+<div class="estrela-bg" id="estrela-bg"></div>
+
+<header>
+    <div class="logo">
+        <img src="img/LOGOdeitada.png" alt="Lang Land Logo" onclick="window.location.href='jogos.html'"> 
+    </div>
+    <div class="centro-header">
+        <h1>Fill in the blanks</h1>
+    </div>
+    <div class="icones-conta">
+         <a href="conta.html">
+            <img src="img/Contapessoal.png" class="perfil-icon" alt="Perfil"> 
+        </a>
+    </div>
+</header>
+
+<main>
+    <!-- Tela de seleção de nível -->
+    <div class="game-container" id="menu">
+        <h2>Escolha o nível</h2>
+        <div class="level-selection">
+            <div class="level-card" onclick="startGame('facil')">
+                <h3>Fácil</h3>
+                <p>5 palavras</p>
+            </div>
+            <div class="level-card" onclick="startGame('medio')">
+                <h3>Médio</h3>
+                <p>7 palavras</p>
+            </div>
+            <div class="level-card" onclick="startGame('dificil')">
+                <h3>Difícil</h3>
+                <p>9 palavras</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tela do jogo -->
+    <div class="game-container" id="jogo" style="display:none;">
+        <div class="game-play">
+            <img id="word-image" src="" class="image-word" alt="Imagem da palavra">
+            <div class="word-panel">
+                <div class="word-container" id="word-container"></div>
+                <input type="text" maxlength="1" class="letter-input" id="letter-input" placeholder="Letra">
+                <button class="check-btn" onclick="checkLetter()">Verificar</button>
+                <div class="score" id="score">Pontuação: 0</div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<footer id="footer-link">
+    <p>&copy; 2025 Lang Land. Todos os direitos reservados.</p>
+</footer>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    if(localStorage.getItem('usuarioCadastrado') !== 'true') {
+        alert('Você precisa fazer o cadastro para acessar os jogos.');
+        window.location.href = 'index.html';
+    }
+    const estrelaBg = document.getElementById('estrela-bg');
+    for(let i=0; i<22; i++) {
+        const estrela = document.createElement('span');
+        estrela.className = 'estrelinha';
+        estrela.innerHTML = '★';
+        estrela.style.left = Math.random()*100 + 'vw';
+        estrela.style.top = (-30 - Math.random()*60) + 'px';
+        estrela.style.fontSize = (18 + Math.random()*22) + 'px';
+        estrela.style.opacity = (0.5 + Math.random()*0.5);
+        estrela.style.animationDuration = (6 + Math.random()*4) + 's';
+        estrela.style.animationDelay = (Math.random()*8) + 's';
+        estrelaBg.appendChild(estrela);
+    }
+
+    // Footer clicável para privacidade
+    const footerLink = document.getElementById("footer-link");
+    footerLink.addEventListener("click", function() {
+        window.location.href = "privacidade.html";
+    });
+});
+
+// Palavras e imagens por nível
+const levels = {
+    facil: [
+        {word:"CAT", image:"img/cat.png"},
+        {word:"DOG", image:"img/dog.png"},
+        {word:"SUN", image:"img/sun.png"},
+        {word:"BALL", image:"img/ball.png"},
+        {word:"CAR", image:"img/car.png"}
+    ],
+    medio: [
+        {word:"APPLE", image:"img/apple.png"},
+        {word:"HOUSE", image:"img/house.png"},
+        {word:"TRAIN", image:"img/train.png"},
+        {word:"FISH", image:"img/fish.png"},
+        {word:"TREE", image:"img/tree.png"},
+        {word:"SCHOOL", image:"img/school.png"},
+        {word:"HORSE", image:"img/horse.png"}
+    ],
+    dificil: [
+        {word:"ELEPHANT", image:"img/elephant.png"},
+        {word:"BUTTERFLY", image:"img/butterfly.png"},
+        {word:"COMPUTER", image:"img/computer.png"},
+        {word:"RAINBOW", image:"img/rainbow.png"},
+        {word:"PENCIL", image:"img/pencil.png"},
+        {word:"DOLPHIN", image:"img/dolphin.png"},
+        {word:"GIRAFFE", image:"img/giraffe.png"},
+        {word:"FLOWER", image:"img/flower.png"},
+        {word:"CAR", image:"img/car.png"}
+    ]
+};
+
+let currentLevel = null;
+let currentIndex = 0;
+let score = 0;
+
+function startGame(level){
+    currentLevel = level;
+    currentIndex = 0;
+    score = 0;
+    document.getElementById("menu").style.display = "none";
+    document.getElementById("jogo").style.display = "flex";
+    showWord();
+}
+
+function showWord(){
+    const current = levels[currentLevel][currentIndex];
+    document.getElementById('word-image').src = current.image;
+    const wordContainer = document.getElementById('word-container');
+    wordContainer.innerHTML = '';
+
+    // letra faltando aleatória
+    const missingIndex = Math.floor(Math.random() * current.word.length);
+
+    for(let i=0; i<current.word.length; i++){
+        const span = document.createElement('span');
+        span.textContent = (i === missingIndex) ? "_" : current.word[i];
+        span.dataset.index = i;
+        wordContainer.appendChild(span);
+    }
+
+    document.getElementById('letter-input').value = '';
+    document.getElementById('letter-input').focus();
+    document.getElementById('score').textContent = 'Pontuação: ' + score;
+}
+
+function checkLetter(){
+    const input = document.getElementById('letter-input').value.toUpperCase();
+    if(!input) return;
+
+    const letters = document.getElementById('word-container').children;
+    const current = levels[currentLevel][currentIndex];
+
+    let missingIndex = -1;
+    for(let i=0;i<letters.length;i++){
+        if(letters[i].textContent === "_") missingIndex = i;
+    }
+
+    if(input === current.word[missingIndex]){
+        letters[missingIndex].textContent = input;
+        score += 10;
+        currentIndex++;
+
+        if(currentIndex < levels[currentLevel].length){
+            showWord();
+        } else {
+            alert('Parabéns! Você completou o nível! Pontuação final: ' + score);
+            backToMenu();
+        }
+    } else {
+        document.getElementById('letter-input').value = '';
+        document.getElementById('letter-input').focus();
+    }
+
+    document.getElementById('score').textContent = 'Pontuação: ' + score;
+}
+
+function backToMenu(){
+    document.getElementById("jogo").style.display = "none";
+    document.getElementById("menu").style.display = "flex";
+}
+</script>
+</body>
+</html>

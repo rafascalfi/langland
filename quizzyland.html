@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Lang Land - Quizzy Land</title>
+  <style>
+    :root {
+      --rosa-principal: #e84251;
+      --amarelo-estrela: #edc945;
+      --azul: #247bca;
+      --verde-agua: #16d6b7;
+      --rosa-escuro: #d91563;
+      --azul-claro: #bfedfb;
+    }
+
+    body.pag-quizzy {
+      min-height: 100vh;
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+      background: var(--rosa-principal);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .estrela-bg {
+      position: absolute; top: 0; left: 0;
+      width: 100vw; height: 100vh;
+      pointer-events: none; z-index: 0; overflow: hidden;
+    }
+    .estrelinha {
+      position: absolute;
+      color: var(--amarelo-estrela);
+      opacity: 0.7;
+      animation: estrelaMove 8s linear infinite;
+    }
+    @keyframes estrelaMove {
+      0% { transform: translateY(-20px);} 
+      100% { transform: translateY(100vh);} 
+    }
+
+    header {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 15px 20px; background-color: var(--azul-claro);
+      z-index: 2; position: relative;
+    }
+    .logo img { width: 145px; }
+    .perfil-icon { width: 70px; cursor: pointer; }
+    .centro-header { text-align: center; flex: 1; }
+    h1 { color: var(--rosa-escuro); font-size: 2rem; margin-bottom: 10px; }
+
+    main {
+      flex: 1; display: flex; flex-direction: column;
+      justify-content: center; align-items: center;
+      padding: 20px; z-index: 2; position: relative;
+    }
+
+    .game-container {
+        display: flex; flex-direction: column;
+        align-items: center; justify-content: center;
+        width: 100%;
+    }
+
+    .level-selection {
+        display: flex;
+        gap: 20px;
+        margin-top: 30px;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .level-selection button.primary {
+      background-color: #fff;
+      color: var(--rosa-escuro);
+      border-radius: 15px;
+      padding: 36px 56px;
+      font-size: 1.1rem;
+      font-weight: 700;
+      cursor: pointer;
+      border: none;
+      box-shadow: 0 8px 15px rgba(0,0,0,0.2);
+      transition: transform 0.3s, box-shadow 0.3s, background 0.3s, color 0.3s;
+      min-width: 180px;
+    }
+
+    .level-selection button.primary:hover {
+      transform: translateY(-8px) scale(1.05);
+      box-shadow: 0 12px 20px rgba(0,0,0,0.3);
+      background-color: var(--amarelo-estrela);
+      color: var(--rosa-escuro);
+    }
+
+    .level-selection .level-qty {
+      color: #247bca;
+      font-size: 0.95rem;
+      font-weight: 600;
+    }
+
+    .quiz-card {
+      background: #ffffffcc;
+      backdrop-filter: blur(2px);
+      border-radius: 16px;
+      padding: 18px;
+      width: min(900px, 92vw);
+      box-shadow: 0 10px 25px rgba(0,0,0,0.12);
+      display: none;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .question-top {
+      display: flex; flex-direction: column; align-items: center; gap: 12px;
+    }
+
+    .question-title {
+      margin: 0; text-align: center; color: var(--rosa-escuro);
+      font-size: 1.6rem; font-weight: 800;
+    }
+
+    .question-img-wrap {
+      width: 100%; display: flex; justify-content: center; align-items: center;
+      border-radius: 12px; padding: 14px; margin-top: 6px;
+    }
+
+    .question-img {
+      width: min(380px, 80vw); height: auto; object-fit: contain; display: block;
+    }
+
+    .options {
+      display: grid; gap: 12px; margin-top: 16px;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .option-btn {
+      margin: 0;
+      padding: 18px 20px;
+      border: none;
+      border-radius: 14px;
+      background-color: var(--azul);
+      color: white;
+      font-size: 1.2rem;
+      font-weight: bold;
+      cursor: pointer;
+      transition: transform 0.15s, background 0.2s, opacity 0.2s;
+      min-height: 64px;
+    }
+
+    .option-btn:hover {
+      background-color: var(--verde-agua);
+      transform: scale(1.05);
+    }
+
+    .option-btn:disabled { cursor: default; opacity: .75; transform: none; }
+
+    .option-btn.correct { background: #2fbf71; color: #fff; }
+    .option-btn.incorrect { background: #c7383f; color: #fff; }
+
+    .feedback {
+      margin-top: 10px; font-weight: 800; text-align: center; font-size: 1.1rem;
+      color: var(--rosa-escuro);
+    }
+
+    .progress-wrap {
+      margin-top: 12px; display: flex; align-items: center; gap: 10px;
+    }
+    .progress-bar {
+      flex: 1; height: 10px; background: #ffffff88; border-radius: 8px; overflow: hidden;
+    }
+    .progress-inner {
+      height: 100%; background: var(--amarelo-estrela); width: 0%; transition: width .3s ease;
+    }
+
+    .controls { display: flex; gap: 10px; justify-content: center; margin-top: 14px; }
+
+    button.primary {
+      margin-top: 0; padding: 10px 16px; border: none; border-radius: 8px;
+      background-color: var(--azul); color: white; font-size: 1rem; cursor: pointer;
+      transition: background .2s, transform .2s;
+    }
+    button.primary:hover { background-color: var(--verde-agua); transform: scale(1.05); }
+
+    footer {
+      text-align: center; padding: 15px; font-size: 14px; color: #fff; background: var(--azul);
+      margin-top: auto;
+      cursor: pointer; /* deixa o footer parecendo clicável */
+    }
+
+    @media (max-width: 560px) {
+      .options { grid-template-columns: 1fr; }
+      .question-title { font-size: 1.4rem; }
+    }
+  </style>
+</head>
+<body class="pag-quizzy">
+  <div class="estrela-bg" id="estrela-bg"></div>
+
+  <header>
+   <div class="logo">
+    <a href="jogos.html">
+        <img src="img/LOGOdeitada.png" alt="Lang Land Logo"> 
+    </a>
+  </div>
+
+    <div class="centro-header">
+      <h1>Quizzy Land</h1>
+    </div>
+    <div class="icones-conta">
+      <a href="conta.html"><img src="img/Contapessoal.png" class="perfil-icon" alt="Perfil"></a>
+    </div>
+  </header>
+
+  <main>
+    <div class="game-container" id="menu">
+      <h2 style="color: var(--azul-claro); text-shadow: 0 2px 0 rgba(0,0,0,.08);">Escolha o nível</h2>
+      <div class="level-selection">
+        <button class="primary" onclick="startQuiz('facil')">
+          <span class="level-name">Fácil</span><br>
+          <span class="level-qty">8 perguntas</span>
+        </button>
+        <button class="primary" onclick="startQuiz('medio')">
+          <span class="level-name">Médio</span><br>
+          <span class="level-qty">10 perguntas</span>
+        </button>
+        <button class="primary" onclick="startQuiz('dificil')">
+          <span class="level-name">Difícil</span><br>
+          <span class="level-qty">12 perguntas</span>
+        </button>
+      </div>
+    </div>
+
+    <div id="quiz" class="quiz-card" style="display:none;">
+      <div class="question-top">
+        <h3 id="questionTitle" class="question-title">What is this?</h3>
+        <div class="question-img-wrap">
+          <img id="questionImage" class="question-img" src="" alt="Image question">
+        </div>
+      </div>
+
+      <div class="options" id="options"></div>
+      <div class="feedback" id="feedback"></div>
+
+      <div class="progress-wrap">
+        <div class="progress-bar"><div class="progress-inner" id="progress"></div></div>
+        <div id="counter" style="font-weight: 800; color: var(--rosa-escuro);">0/0</div>
+      </div>
+
+      <div class="controls">
+        <button class="primary" id="nextBtn" onclick="nextQuestion()" disabled>Próxima</button>
+        <button class="primary" onclick="backToMenu()">Voltar</button>
+      </div>
+    </div>
+  </main>
+
+  <footer id="footer-link">
+    <p>&copy; 2025 Lang Land. Todos os direitos reservados.</p>
+  </footer>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      if(localStorage.getItem('usuarioCadastrado') !== 'true'){
+        alert('Você precisa fazer o cadastro para acessar os jogos.');
+        window.location.href = 'index.html';
+      }
+
+      const estrelaBg = document.getElementById('estrela-bg');
+      for(let i=0; i<22; i++){
+        const estrela = document.createElement('span');
+        estrela.className = 'estrelinha';
+        estrela.innerHTML = '★';
+        estrela.style.left = Math.random()*100 + 'vw';
+        estrela.style.top = (-30 - Math.random()*60) + 'px';
+        estrela.style.fontSize = (18 + Math.random()*22) + 'px';
+        estrela.style.opacity = (0.5 + Math.random()*0.5);
+        estrela.style.animationDuration = (6 + Math.random()*4) + 's';
+        estrela.style.animationDelay = (Math.random()*8) + 's';
+        estrelaBg.appendChild(estrela);
+      }
+
+      // Footer clicável
+      const footerLink = document.getElementById("footer-link");
+      footerLink.addEventListener("click", function() {
+        window.location.href = "privacidade.html";
+      });
+    });
+
+    const questionBank = {
+      facil: [
+        { img: 'img/quiz/apple.png', answer: 'apple', options: ['apple','dog','car','cat'] },
+        { img: 'img/quiz/dog.png', answer: 'dog', options: ['cat','bird','dog','fish'] },
+        { img: 'img/quiz/car.png', answer: 'car', options: ['ball','car','train','bike'] },
+        { img: 'img/quiz/star.png', answer: 'star', options: ['moon','milk','star','shoe'] },
+        { img: 'img/quiz/house.png', answer: 'house', options: ['horse','house','mouse','tree'] },
+        { img: 'img/quiz/bread.png', answer: 'bread', options: ['candy','bread','phone','chair'] },
+        { img: 'img/quiz/fish.png', answer: 'fish', options: ['snake','bird','fish','cat'] },
+        { img: 'img/quiz/train.png', answer: 'train', options: ['plane','train','boat','bike'] },
+      ],
+      medio: [
+        { img: 'img/quiz/elephant.png', answer: 'elephant', options: ['giraffe','elephant','lion','tiger'] },
+        { img: 'img/quiz/umbrella.png', answer: 'umbrella', options: ['umbrella','bicycle','marker','hat'] },
+        { img: 'img/quiz/guitar.png', answer: 'guitar', options: ['music','guitar','drum','piano'] },
+        { img: 'img/quiz/chocolate.png', answer: 'chocolate', options: ['chocolate','bread','water','soda'] },
+        { img: 'img/quiz/phone.png', answer: 'phone', options: ['light','phone','clock','key'] },
+        { img: 'img/quiz/cloud.png', answer: 'cloud', options: ['cloud','snake','shoe','fork'] },
+        { img: 'img/quiz/robot.png', answer: 'robot', options: ['rocket','robot','astronaut','alien'] },
+        { img: 'img/quiz/pencil.png', answer: 'pencil', options: ['marker','pencil','eraser','pen'] },
+        { img: 'img/quiz/plane.png', answer: 'plane', options: ['train','boat','plane','car'] },
+        { img: 'img/quiz/moon.png', answer: 'moon', options: ['sun','star','moon','cloud'] },
+      ],
+      dificil: [
+        { img: 'img/quiz/dragon.png', answer: 'dragon', options: ['dragon','wizard','castle','sword'] },
+        { img: 'img/quiz/unicorn.png', answer: 'unicorn', options: ['unicorn','rainbow','fairy','flower'] },
+        { img: 'img/quiz/robot.png', answer: 'robot', options: ['robot','alien','rocket','laser'] },
+        { img: 'img/quiz/spaceship.png', answer: 'spaceship', options: ['spaceship','planet','star','moon'] },
+        { img: 'img/quiz/magic.png', answer: 'magic', options: ['magic','wand','hat','book'] },
+        { img: 'img/quiz/king.png', answer: 'king', options: ['queen','king','castle','throne'] },
+        { img: 'img/quiz/princess.png', answer: 'princess', options: ['princess','dragon','horse','car'] },
+        { img: 'img/quiz/castle.png', answer: 'castle', options: ['castle','village','tower','bridge'] },
+        { img: 'img/quiz/sword.png', answer: 'sword', options: ['sword','shield','bow','arrow'] },
+        { img: 'img/quiz/treasure.png', answer: 'treasure', options: ['treasure','chest','gold','jewel'] },
+        { img: 'img/quiz/alien.png', answer: 'alien', options: ['alien','robot','spaceship','planet'] },
+        { img: 'img/quiz/wizard.png', answer: 'wizard', options: ['wizard','witch','potion','spell'] },
+      ]
+    };
+
+    let mode = null, questions = [], index = 0, score = 0;
+
+    function startQuiz(selected){
+      mode = selected;
+      questions = shuffle([...questionBank[selected]]);
+      index = 0; score = 0;
+      document.getElementById('menu').style.display = 'none';
+      document.getElementById('quiz').style.display = 'flex';
+      renderQuestion();
+    }
+
+    function backToMenu(){
+      document.getElementById('quiz').style.display = 'none';
+      document.getElementById('menu').style.display = 'flex';
+    }
+
+    function renderQuestion(){
+      const q = questions[index];
+      const img = document.getElementById('questionImage');
+      const optionsWrap = document.getElementById('options');
+      const feedback = document.getElementById('feedback');
+      const nextBtn = document.getElementById('nextBtn');
+      const progress = document.getElementById('progress');
+      const counter = document.getElementById('counter');
+
+      document.getElementById('questionTitle').textContent = 'What is this?';
+      img.src = q.img;
+      img.alt = `Image: ${q.answer}`;
+
+      optionsWrap.innerHTML = '';
+      feedback.textContent = '';
+      nextBtn.disabled = true;
+
+      const shuffledOptions = shuffle([...q.options]);
+
+      shuffledOptions.forEach(opt => {
+        const btn = document.createElement('button');
+        btn.className = 'option-btn';
+        btn.textContent = opt;
+        btn.onclick = () => handleAnswer(btn, opt, q.answer);
+        optionsWrap.appendChild(btn);
+      });
+
+      const pct = ((index)/questions.length)*100;
+      progress.style.width = pct + '%';
+      counter.textContent = `${index}/${questions.length}`;
+    }
+
+    function handleAnswer(btn, picked, correct){
+      const all = [...document.querySelectorAll('.option-btn')];
+      all.forEach(b => b.disabled = true);
+
+      if(picked === correct){
+        btn.classList.add('correct');
+        document.getElementById('feedback').textContent = 'Correct!';
+        score++;
+      } else {
+        btn.classList.add('incorrect');
+        const right = all.find(b => b.textContent === correct);
+        if(right) right.classList.add('correct');
+        document.getElementById('feedback').textContent = 'Try again!';
+      }
+
+      document.getElementById('nextBtn').disabled = false;
+
+      const counter = document.getElementById('counter');
+      counter.textContent = `${index+1}/${questions.length}`;
+      const progress = document.getElementById('progress');
+      progress.style.width = ((index+1)/questions.length)*100 + '%';
+    }
+
+    function nextQuestion(){
+      const nextBtn = document.getElementById('nextBtn');
+      nextBtn.disabled = true;
+
+      index++;
+      if(index < questions.length){
+        renderQuestion();
+      } else {
+        endQuiz();
+      }
+    }
+
+    function endQuiz(){
+      const total = questions.length;
+      const acertos = score;
+      const msg = `Você terminou! Pontuação: ${acertos}/${total}`;
+
+      const feedback = document.getElementById('feedback');
+      feedback.textContent = msg;
+
+      const optionsWrap = document.getElementById('options');
+      optionsWrap.innerHTML = '';
+
+      const nextBtn = document.getElementById('nextBtn');
+      nextBtn.style.display = 'none';
+
+      const controls = document.querySelector('.controls');
+      controls.innerHTML = `
+        <button class="primary" id="replayBtn">Jogar novamente</button>
+        <button class="primary" onclick="backToMenu()">Menu</button>
+      `;
+
+      document.getElementById('replayBtn').addEventListener('click', () => {
+        nextBtn.style.display = 'inline-block';
+        controls.innerHTML = `
+          <button class="primary" id="nextBtn" onclick="nextQuestion()" disabled>Próxima</button>
+          <button class="primary" onclick="backToMenu()">Voltar</button>
+        `;
+        startQuiz(mode);
+      });
+    }
+
+    function shuffle(arr){
+      for(let i = arr.length - 1; i > 0; i--){
+        const j = Math.floor(Math.random() * (i + 1));
+        [arr[i], arr[j]] = [arr[j], arr[i]];
+      }
+      return arr;
+    }
+
+    window.startQuiz = startQuiz;
+    window.nextQuestion = nextQuestion;
+    window.backToMenu = backToMenu;
+  </script>
+</body>
+</html>
